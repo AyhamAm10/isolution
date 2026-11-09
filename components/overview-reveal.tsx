@@ -30,13 +30,16 @@ export function OverviewReveal() {
   
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start end", "start 0.3"]
+    // Tie the mapping to the section's top aligning with the viewport top so
+    // progress begins increasing on the very first pixel of page scroll.
+    offset: ["start start", "end start"]
   })
 
   // Expand from center to full width using scale
   const scaleX = useTransform(scrollYProgress, [0, 1], [0.85, 1])
   const borderRadius = useTransform(scrollYProgress, [0, 1], [28, 0])
-  const opacity = useTransform(scrollYProgress, [0, 0.3], [0, 1])
+  // Use the full 0-1 progress so opacity responds from the very first pixel
+  const opacity = useTransform(scrollYProgress, [0, 1], [0, 1])
 
   return (
     <section ref={containerRef} className="relative py-24 md:py-32">
